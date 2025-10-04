@@ -12,6 +12,6 @@ router.get("/getallurls", getAllUrls);
 router.post("/geturl", handlecreateNewUrl);
 router.get("/:shortId", handleGetUrl);
 router.get("/analysis/:shortId", handleAnalysisUrl);
-router.post("/delete", handleDeleteUrl);
+router.delete("/delete/:shortId", handleDeleteUrl);
 
 export default router;

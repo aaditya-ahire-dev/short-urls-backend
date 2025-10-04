@@ -107,7 +107,7 @@ export async function handleAnalysisUrl(req, res) {
 
 export async function handleDeleteUrl(req, res) {
   try {
-    const url_shortId = req.body.deleteUrl;
+    const url_shortId = req.params.shortId;
     const deleteUrl = await URL.deleteOne({ shortId: `${url_shortId}` });
     if (!deleteUrl) {
       const err = new Error("URL not found");
