@@ -97,7 +97,6 @@ export async function getAllUrls(req, res) {
 export async function urlDetails(req, res) {
   try {
     const query = req.body.query;
-    console.log(query)
     if (query.includes("@")) {
       const user = await User.findOne({ email: query });
       if (!user) {
@@ -137,7 +136,6 @@ export async function urlDetails(req, res) {
             );
         
         if (!shorturldetails.length) {
-        console.log('this is no !');
           return res.json({
             message: "Urls not found or user haven't created any yet",
             success: true,

@@ -27,7 +27,6 @@ export async function getAllUrls(req, res) {
 export async function handlecreateNewUrl(req, res) {
   try {
     const body = req.body;
-    console.log(body);
     
     const shortID = shortId();
     if (!body.url) {
