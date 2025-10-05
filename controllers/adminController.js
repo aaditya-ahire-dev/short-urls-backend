@@ -1,17 +1,23 @@
 import URL from "../models/url.js";
 import User from "../models/user.js";
 import { setId } from "../servies/auth.js";
-
+import bcrypt from 'bcrypt'
 export async function loginAdmin(req, res) {
   try {
     const { email, password } = req.body;
     
-    const user = await User.findOne({ email: email, password: password });
+    const user = await User.findOne({ email: email });
     if (!user) {
       const err = new Error("Email or Password is Incorrect");
       err.statusCode = 404;
       throw err;
     }
+     const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+          const err = new Error("Email or Password is Incorrect");
+            err.statusCode = 404;
+            throw err;
+        }
     
 
     if (user.role === "ADMIN") {
@@ -53,11 +59,11 @@ export async function createAdmin(req, res) {
       err.statusCode = 409;
       throw err;
     }
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     const createdAdmin = await User.create({
       name,
       email,
-      password,
+      password:hashedPassword,
       role: "ADMIN",
     });
     return res

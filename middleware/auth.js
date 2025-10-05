@@ -27,7 +27,6 @@ export function checkAuthentication(req, res, next) {
 export function checkAdminAuthentication(req, res, next) {
   try {
     const token = req.cookies?.Admin_token;
-    console.log(req.cookies);
     
     req.user = null;
     if (!token) {

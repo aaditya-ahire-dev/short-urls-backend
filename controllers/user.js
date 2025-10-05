@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/user.js";
 import { setId, getId } from "../servies/auth.js";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt"
 
 export async function handleSignUpUser(req, res) {
   try {
@@ -14,12 +15,12 @@ export async function handleSignUpUser(req, res) {
       err.statusCode = 409;
       throw err;
     }
+    const hashedPassword = await bcrypt.hash(password, 10);
     const result = await User.create({
       name,
       email,
-      password,
+      password:hashedPassword,
     });
-    console.log(result);
     
     const user = {
       name:result.name,
@@ -44,15 +45,19 @@ export async function handleLoginInUser(req, res) {
   try {
     
     const { email, password } = req.body;
-    const user = await User.findOne({
-      email: `${email}`,
-      password: `${password}`,
-    });
+    const user = await User.findOne({email:email});
     if (!user) {
       const err = new Error("Email or Password is Incorrect");
       err.statusCode = 404;
       throw err;
     }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      const err = new Error("Email or Password is Incorrect");
+        err.statusCode = 404;
+        throw err;
+    }
+
     const token = setId(user);
     const userInfo = {
       name: user.name,
