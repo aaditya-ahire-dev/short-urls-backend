@@ -6,12 +6,12 @@ import {
   handleAnalysisUrl,
   handleDeleteUrl,
 } from "../controllers/url.js";
-
+import { checkAuthentication } from "../middleware/auth.js";
 const router = express.Router();
-router.get("/getallurls", getAllUrls);
-router.post("/geturl", handlecreateNewUrl);
+router.get("/getallurls",checkAuthentication, getAllUrls);
+router.post("/geturl",checkAuthentication, handlecreateNewUrl);
 router.get("/:shortId", handleGetUrl);
-router.get("/analysis/:shortId", handleAnalysisUrl);
-router.delete("/delete/:shortId", handleDeleteUrl);
+router.get("/analysis/:shortId",checkAuthentication, handleAnalysisUrl);
+router.delete("/delete/:shortId",checkAuthentication, handleDeleteUrl);
 
 export default router;

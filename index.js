@@ -8,7 +8,6 @@ import userRoutes from "./routes/user.js";
 import adminRouter from "./routes/adminRouter.js";
 import cors from "cors"
 import cookieParser from "cookie-parser";
-import { checkAuthentication, restrictTo } from "./middleware/auth.js";
 
 
 
@@ -37,7 +36,7 @@ app.get("/",(req,res)=>{
 return res.json({mess:"request coming to backend"})
 })
 app.use("/user", userRoutes);
-app.use("/url", checkAuthentication, urlRoutes);
+app.use("/url", urlRoutes);
 app.use("/admin", adminRouter);
 
 app.listen(PORT, () => console.log("Server Started at ", PORT));
